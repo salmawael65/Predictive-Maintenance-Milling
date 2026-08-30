@@ -21,10 +21,21 @@ MODEL_PATH = "Best_XGBoost_Dataset_A.pkl"
 DATASET_PATH = "predictive_maintenance.csv"  # ضع المسار الصحيح لملف البيانات لديك
 
 # Load Main XGBoost model
+import os
+import joblib
+
+# تحديد المسار المطلق لمجلد المشروع على السحابة
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "Best_XGBoost_Dataset_A.pkl")
+DATASET_PATH = os.path.join(BASE_DIR, "dataset_a_final_results (1).csv")
+
+
 @st.cache_resource
 def load_main_model():
+    if not os.path.exists(MODEL_PATH):
+        st.error(f"⚠️ ملف النموذج غير موجود بالمسار: {MODEL_PATH}")
+        st.stop()
     return joblib.load(MODEL_PATH)
-
 
 best_xgb = load_main_model()
 
